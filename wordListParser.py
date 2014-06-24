@@ -33,7 +33,7 @@ def main():
 	for line in open(filename):
 		for word in line.split():
 			wordlength = len(word)
-			if wordlength == char_count:	
+			if str(wordlength) == char_count_string:	
 				with open(new_file, 'a') as f:
 					f.write(word + '\n') 
 					f.close()
