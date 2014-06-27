@@ -66,6 +66,7 @@ def main():
 		cleantext = htmlTagScrape(htmlOut)
 		if 'YES' in dict or 'yes' in dict:
 			dictCreator(cleantext)
+		os.remove("cleantextFile.txt")
 
 if __name__ == '__main__':
    main()
