@@ -25,6 +25,9 @@ parser = ArgumentParser(description='Download the contents of a webpage and scra
 parser.add_argument('-s', '--site', default='', help='Website to scrape')
 parser.add_argument('-o', '--output', default='', help='webpage output folder')
 parser.add_argument('-d', '--dict', default='YES', help='Also create a dictionary file from webpage contents? (YES or NO) DEFAULT=YES')
+parser.add_argument('-c', '--char_count', default='', help='Number of characters to search for - For use with wordParser.py')
+parser.add_argument('-C', '--contains', default ='', help='Search for s certain string of characters in the file')
+
 
 args = parser.parse_args()
 if not len(sys.argv) > 1:
@@ -32,7 +35,9 @@ if not len(sys.argv) > 1:
 site = args.site
 output = args.output
 dict = args.dict
-html = ''
+cleanr = re.compile('<.*?>')
+char_count = args.char_count
+contains = args.contains
 
 def downSite():
 	print ('Scraping ' + site + '.  Please wait.')
@@ -43,20 +48,24 @@ def downSite():
 
 def htmlTagScrape(htmlOut):
 	print ('Scraping out HTML tags from ' + site)
-	print (htmlOut)
+	cleantext = re.sub(cleanr,'', htmlOut)
+	cleantextFile = "cleantextFile.txt"
+	with open(cleantextFile, 'w') as f:
+		f.write(cleantext)
+		f.close()
 
-def dictCreator():
+def dictCreator(cleantest):
 	print ('Calling wordParser.py to create your dictionary.')
-	
+	os.system("python wordListParser.py -f cleantextFile.txt" + " -c " + char_count + " -C " +  contains)
 
 def main():
     	if len(sys.argv) < 2 or '-h' in sys.argv or '--help' in sys.argv:
       		sys.exit(help())
 	else:
 		htmlOut = downSite()
-		htmlTagScrape(htmlOut)
+		cleantext = htmlTagScrape(htmlOut)
 		if 'YES' in dict or 'yes' in dict:
-			dictCreator()
+			dictCreator(cleantext)
 
 if __name__ == '__main__':
    main()
