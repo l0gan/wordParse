@@ -33,10 +33,11 @@ args = parser.parse_args()
 if not len(sys.argv) > 1:
 	parser.print_help()
 site = args.site
-output = args.output
+#output = args.output
 dict = args.dict
 cleanr = re.compile('<.*?>')
 char_count = args.char_count
+char_count_string = str(char_count)
 contains = args.contains
 
 def downSite():
@@ -56,7 +57,15 @@ def htmlTagScrape(htmlOut):
 
 def dictCreator(cleantest):
 	print ('Calling wordParser.py to create your dictionary.')
-	os.system("python wordListParser.py -f cleantextFile.txt" + " -c " + char_count + " -C " +  contains)
+	if len(contains) > 0:
+		if len(char_count) > 1:
+			os.system("python wordListParser.py -f cleantextFile.txt" + " -c " + char_count_string + " -C " +  contains)
+		else:
+			os.system("python wordListParser.py -f cleantextFile.txt" + " -C " +  contains)
+	elif len(char_count) > 1:
+		os.system("python wordListParser.py -f cleantextFile.txt" + " -c " + char_count)
+	else:
+		print ('Missing Arguments for wordParser.')
 
 def main():
     	if len(sys.argv) < 2 or '-h' in sys.argv or '--help' in sys.argv:
