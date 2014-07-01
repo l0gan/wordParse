@@ -1,5 +1,5 @@
 #! /bin/python
-
+# ver 1.0
 # This script will scrape the contents of a given page and save to a file.
 # It will then parse the file and scape off the html content.
 # Finally it will create a dictionary wordlist from the remaining words on the page that can be used to perform password guessing/cracking.
